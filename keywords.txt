@@ -1,0 +1,8 @@
+# Syntax Coloring Map For Protractor
+
+# Datatypes (KEYWORD1)
+
+Protractor	KEYWORD1
+
+# Methods and Functions (KEYWORD2)
+
