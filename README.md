@@ -95,11 +95,11 @@ Parameters:   none
 Return:       (int16_t) If object is seen, returns the angle from 0 to 180. Else, returns -1.
 
 Function:     Protractor.objectAngle(ob) - returns the angle to an object ob
-Parameters:   (int16_t) ob - ranges from 1 to 4, specifies which object we want to know the angle of. Objects are ranked from most intense to least intense.
+Parameters:   (int16_t) ob - ranges from 0 to 3, specifies which object we want to know the angle of. Objects are ranked from most intense to least intense.
 Return:       (int16_t) If 0 <= ob < objectCount(), returns the angle 0 to 180. Else, returns -1.
 
 Function:     Protractor.objectVisibility(ob) - returns the visibility of an object ob. Visibility is a relative measure of the amount of light reflected off an object. Visibility is generally not a good indicator of distance.
-Parameters:   (int16_t) ob - ranges from 1 to 4, specifies which object we want to know the angle of. Objects are ranked from most intense to least intense.
+Parameters:   (int16_t) ob - ranges from 0 to 3, specifies which object we want to know the angle of. Objects are ranked from most intense to least intense.
 Return:       (int16_t) If 0 <= ob < objectCount(), returns the visibility from 0 to 255. Else, returns -1.
 
 Function:     Protractor.pathAngle() - returns the angle to the most open path
@@ -107,11 +107,11 @@ Parameters:   none
 Return:       (int16_t) If path is seen, returns the angle from 0 to 180. Else, returns -1.
 
 Function:     Protractor.pathAngle(pa) - returns the angle to a path pa
-Parameters:   (int16_t) pa - ranges from 1 to 4, specifies which path we want to know the angle of. Paths are ranked from most open to least open.
+Parameters:   (int16_t) pa - ranges from 0 to 3, specifies which path we want to know the angle of. Paths are ranked from most open to least open.
 Return:       (int16_t) If 0 <= pa < pathCount(), returns the angle 0 to 180. Else, returns -1.
 
 Function:     Protractor.pathVisibility(pa) - returns the visibility of a path pa. Visibility is a relative measure of how little light is reflected from a pathway. Visibility can indicate which of several pathways is more open.
-Parameters:   (int16_t) ob - ranges from 1 to 4, specifies which object we want to know the angle of. Objects are ranked from most intense to least intense.
+Parameters:   (int16_t) ob - ranges from 0 to 3, specifies which object we want to know the angle of. Objects are ranked from most intense to least intense.
 Return:       (int16_t) If 0 <= ob < pathCount(), returns the visibility from 0 to 255. Else, returns -1.
 
 Function:     Protractor.LEDshowObject() - Set the feedback LED behavior to indicate where the object is
