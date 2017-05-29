@@ -11,7 +11,7 @@ For a complete tutorial on wiring up and using the Protractor go to:
 
 The Protractor communicates with a master using either Serial Bus or I2C communication. Examples for using the Protractor with an Arduino are provided for both Serial and I2C. The Protractor has level shifters included on all communication lines and can be interfaced with either 5V or 3.3V microcontrollers.
 
-## ELECTRICAL CONNECTIONS
+### ELECTRICAL CONNECTIONS
 
 To use the Protractor with an Arduino over I2C or Serial, connections must be made for Power and Communication.
 
@@ -45,7 +45,7 @@ The following list of boards and communication ports have been tested with the P
  5. Teensy3.2: Serial1, Serial2, Serial3, AltSoftSerial, Wire work; Software Serial does not work
  6. Teensy3.6: Serial1, Serial2, Serial3, Serial4, Serial5, AltSoftSerial, Wire, Wire1, Wire2 work; Software Serial does not work
 
-__BASIC FUNCTIONS__
+### BASIC FUNCTIONS
 
 The Protractor library provides a command to read all available data from the Protractor Sensor. The data is stored inside the master's memory.
 
@@ -53,7 +53,7 @@ The Protractor library provides a command which tells the number of objects whic
 
 The Protractor library provides a command which tells the angle between the sensor and an object. Another command tells the angle between the sensor and an open path.
 
-__ADVANCED FUNCTIONS__
+### ADVANCED FUNCTIONS
 
 The Protractor library provides a command to change the sensor's I2C address. The default I2C address of all Protractors is set to 69 (0x45) during manufacture. Changing the default I2C address allows connecting multiple Protractors to a single host microcontroller. The Protractor must be reset for the new address to take effect. The Protractor will remember the new I2C address after it is powered down and restarted.
 
@@ -65,7 +65,7 @@ The Protractor library provides a command to change amount of time between senso
 
 If the Protractor's scan time is set to zero, continuous scanning will be disabled. The Protractor will scan for objects only when data is requested by the master. When data is requested, there will be a 15 millisecond delay before the Protractor responds with the requested data. Care must be taken to ensure the communication link with the master is able to accept this amount of delayed response without causing issues. To disable the Protractor, set the scan time to zero and don't make any requests for data.
 
-__List of Available Functions__
+### List of Available Functions
 ```
 Function:     Protractor.begin(Serial)  - initialize a Protractor using Serial communication
 Parameters:   (Stream)Serial: reference to a Serial object. Could be Serial, Serial1, or a SoftwareSerial object
