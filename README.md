@@ -1,6 +1,6 @@
 ![Protractor Angle Sensor](http://www.will-moore.com/images/ProtractorAngleSensor_sm.png)
 
-__PROTRACTOR - A Proximity Sensor that Measures Angles__
+# PROTRACTOR - A Proximity Sensor that Measures Angles
 
 This Library works with the Protractor Sensor. A lot of sensors can tell the distance to an object, but determining the angle to an object is much harder. With a 180 degree field of view, the Protractor can sense open pathways and tell the angle to multiple objects up to 30cm (12 inches) away.  With a Protractor mounted to your mobile robot, you can easily find or avoid objects.
 
@@ -11,7 +11,7 @@ For a complete tutorial on wiring up and using the Protractor go to:
 
 The Protractor communicates with a master using either Serial Bus or I2C communication. Examples for using the Protractor with an Arduino are provided for both Serial and I2C. The Protractor has level shifters included on all communication lines and can be interfaced with either 5V or 3.3V microcontrollers.
 
-__ELECTRICAL CONNECTIONS__
+## ELECTRICAL CONNECTIONS
 
 To use the Protractor with an Arduino over I2C or Serial, connections must be made for Power and Communication.
 
