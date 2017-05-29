@@ -1,4 +1,4 @@
-.center[![Protractor Angle Sensor](http://www.will-moore.com/images/ProtractorAngleSensor_sm.png)]
+![Protractor Angle Sensor](http://www.will-moore.com/images/ProtractorAngleSensor_sm.png)
 
 __PROTRACTOR - A Proximity Sensor that Measures Angles__
 
