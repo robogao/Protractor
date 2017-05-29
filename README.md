@@ -1,6 +1,6 @@
 PROTRACTOR - A Proximity Sensor that Measures Angles
 
-![Protractor Angle Sensor](http://www.will-moore.com/images/ProtractorAngleSensor.png)
+![Protractor Angle Sensor](http://www.will-moore.com/images/ProtractorAngleSensor_sm.png)
 
 This Library works with the Protractor Sensor. A lot of sensors can tell the distance to an object, but determining the angle to an object is much harder. With a 180 degree field of view, the Protractor can sense open pathways and tell the angle to multiple objects up to 30cm (12 inches) away.  With a Protractor mounted to your mobile robot, you can easily find or avoid objects.
 
