@@ -7,7 +7,7 @@ This Library works with the Protractor Sensor. A lot of sensors can tell the dis
 The Protractor is designed to work well with Mini Sumo robots, and can also be used as a general purpose proximity sensor.
 
 For a complete tutorial on wiring up and using the Protractor go to:
-    http://www.robogao.com/Protractor
+    http://www.will-moore.com/protractor/ProtractorUserGuide_DRAFT.pdf
 
 The Protractor communicates with a master using either Serial Bus or I2C communication. Examples for using the Protractor with an Arduino are provided for both Serial and I2C. The Protractor has level shifters included on all communication lines and can be interfaced with either 5V or 3.3V microcontrollers.
 
