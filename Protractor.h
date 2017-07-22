@@ -59,16 +59,18 @@ class Protractor
     void begin(Stream &serial); // Initialize protractor using Serial
     void begin(TwoWire &wire, int16_t address); // Initialize protractor using I2C
     bool read(); // gets all the data for all objects and paths from the protractor. Up to 4 objects and paths may be sensed at a time.
-    bool read(int16_t obs); // gets only obs number of objects and obs number of paths from protractor. Returns the most intense objects and most open pathways first. Minimizes data transfer for time sensitive applications. If obs > 4 then obs = 4.
+    bool read(int16_t obs); // gets only obs number of objects and obs number of paths from protractor. Returns the most visible objects and most open pathways first. Minimizes data transfer for time sensitive applications. If obs > 4 then obs = 4.
     int16_t objectCount(); // returns the number of objects detected
     int16_t pathCount(); // returns the number of paths detected
-    int16_t objectAngle(); // returns the angle to the most intense object
-    int16_t objectAngle(int16_t ob); // returns the angle to the object ob in the object list. Valid values of ob are 0 to 3. Object are ranked by intensity.  Most intense object is ob = 0.  Least intense object is ob = 3. If ob exceeds number of data points returned from sensor, returns -1.
+    int16_t objectAngle(); // returns the angle to the most visible object
+    int16_t objectAngle(int16_t ob); // returns the angle to the object ob in the object list. Valid values of ob are 0 to 3. Object are ranked by intensity.  Most visible object is ob = 0.  Least visible object is ob = 3. If ob exceeds number of data points returned from sensor, returns -1.
+	int16_t objectVisibility(); // returns the visibility of the most visible object
     int16_t objectVisibility(int16_t ob); // returns the visibility of the object ob in the object list. Valid values of ob are 0 to 3. Visibility is a relative measure of the amount of light reflected off an object. Visibility is generally not a good indicator of distance. If ob exceeds number of data points returned from sensor, returns -1.
     int16_t pathAngle(); // returns the angle to the most open pathway
     int16_t pathAngle(int16_t pa); // returns the angle to the path pa in the pathway list. Valid values of pa are 0 to 3. Pathways are ranked by openness.  Most open pathway is pa = 0.  Least open pathway is pa = 3. If pa exceeds number of data points returned from sensor, returns -1.
+	int16_t pathVisibility(); // returns the visibility of the most open pathway
     int16_t pathVisibility(int16_t pa); // returns the visibility of a path pa in the path list. Valid values of pa are 0 to 3. Visibility is a relative measure of how little light is reflected from a pathway. Visibility can indicate which of several pathways is more open. If pa exceeds number of data points returned from sensor, returns -1.
-    void LEDshowObject(); // Set the feedback LEDs to follow the most intense Objects detected
+    void LEDshowObject(); // Set the feedback LEDs to follow the most visible Objects detected
     void LEDshowPath(); // Set the feedback LEDs to follow the most open pathway detected
     void LEDoff(); // Turn off the feedback LEDs
     void scanTime(int16_t milliSeconds); // 0 = scan only when called. 1 to 15 = rescan every 15ms, >15 = rescan every milliSeconds, max 32767.  Default time_ms is set to 15ms.
