@@ -49,47 +49,56 @@ void loop() {
   // How many objects are within view?
   int numObjects = myProtractor.objectCount();
   Serial.print("Number of Objects: ");
-  Serial.println(numObjects);
+  Serial.print(numObjects);
+  Serial.print(", ");
   
   // If at least one object is in view, print the angle of the most visible object to the Serial Port
   if(numObjects > 0){
     int object = myProtractor.objectAngle(); // store the angle to the object in a variable
-    Serial.print("Angle to the Object = ");
-    Serial.print(object);             // Print the Angle
+    Serial.print("Angle of Most Visible Object = ");
+    Serial.print(object);             // Print the Angle of the object
     Serial.println(" degrees");
   }
   
   // Print the angles to all objects within view. Objects are in rank order from most visible to least visible.
-  Serial.println("Angles to all Objects Seen:");
+  Serial.println("Angles, Visibility");
   for(int i = 0; i < numObjects; i++){
-	Serial.print("  Object ");
-	Serial.print(i);
-	Serial.print(": ");
+    Serial.print("   ");
+	if(myProtractor.objectAngle(i) < 100) Serial.print(" ");
+	if(myProtractor.objectAngle(i) < 10)  Serial.print(" ");
 	Serial.print(myProtractor.objectAngle(i));
-	Serial.println(" degrees");
+	Serial.print(", ");
+	if(myProtractor.objectVisibility(i) < 100) Serial.print(" ");
+	if(myProtractor.objectVisibility(i) < 10)  Serial.print(" ");
+	Serial.println(myProtractor.objectVisibility(i));
   }
+  Serial.println();
   
   // How many pathways are within view?
   int numPaths = myProtractor.pathCount();
   Serial.print("Number of Paths: ");
-  Serial.println(numPaths);
+  Serial.print(numPaths);
+  Serial.print(", ");
     
-  // If at least one pathway is in view, print the angle of the pathway to the Serial Port
+  // If at least one pathway is in view, print the angle of the most visibile pathway to the Serial Port
   if(numPaths > 0){
     int path = myProtractor.pathAngle(); // store the angle to the object in a variable
-    Serial.print("Angle to the Path = ");
+    Serial.print("Angle of Most Visible Path = ");
     Serial.print(path);             // Print the Angle
     Serial.println(" degrees");
   }
   
   // Print the angles to all paths within view. Paths are in rank order from most open to least open.
-  Serial.println("Angles to all Paths Seen:");
+  Serial.println("Angles, Visibility");
   for(int i = 0; i < numPaths; i++){
-	Serial.print("  Path ");
-	Serial.print(i);
-	Serial.print(": ");
+    Serial.print("   ");
+	if(myProtractor.pathAngle(i) < 100) Serial.print(" ");
+	if(myProtractor.pathAngle(i) < 10)  Serial.print(" ");
 	Serial.print(myProtractor.pathAngle(i));
-	Serial.println(" degrees");
+	Serial.print(", ");
+	if(myProtractor.pathVisibility(i) < 100) Serial.print(" ");
+	if(myProtractor.pathVisibility(i) < 10)  Serial.print(" ");
+	Serial.println(myProtractor.pathVisibility(i));
   }
   
   Serial.println();
