@@ -55,8 +55,7 @@ void Protractor::begin(TwoWire &wire, int16_t address) // Initialize the Protrac
 bool Protractor::read() { // get all of the data from the protractor.
   return read(MAXOBJECTS);
 }
-
-bool Protractor::read(int16_t obs) { // gets obs number of objects and obs number of paths from protractor. Returns the most intense objects and most open pathways. Minimizes data transfer for time sensitive applications.
+bool Protractor::read(int16_t obs) { // gets obs number of objects and obs number of paths from protractor. Returns the most visible objects and most open pathways. Minimizes data transfer for time sensitive applications.
   if(obs > MAXOBJECTS) obs = MAXOBJECTS;
   _numdata = obs;
   uint8_t numBytes = 1 + obs*4;
@@ -88,7 +87,7 @@ int16_t Protractor::pathCount() { // returns the number of paths detected
   return (int16_t)(_buffer[0] &= 0b00001111); // number of paths detected is the low nibble of _buffer[0]
 }
 
-int16_t Protractor::objectAngle() { // returns the angle to the most intense object
+int16_t Protractor::objectAngle() { // returns the angle to the most visible object
   return objectAngle(0);
 }
 int16_t Protractor::objectAngle(int16_t ob) { // returns the angle to the object ob in the object list, indexed from 1. Left most object is 1. If ob exceeds number of objects detected, return zero.
@@ -99,7 +98,10 @@ int16_t Protractor::objectAngle(int16_t ob) { // returns the angle to the object
     return angle;
   }
 }
-int16_t Protractor::objectVisibility(int16_t ob) { // returns the visibility of the object ob in the object list, indexed from 1. Left most object is 1. If ob exceeds number of objects detected, return zero.
+int16_t Protractor::objectVisibility() { // returns the visibility of the most visible object
+  return objectVisibility(0);
+}
+int16_t Protractor::objectVisibility(int16_t ob = 0) { // returns the visibility of the object ob in the object list, indexed from 1. Left most object is 1. If ob exceeds number of objects detected, return zero.
   if(ob >= objectCount() || ob < 0){
     return -1;
   }else{
@@ -118,6 +120,9 @@ int16_t Protractor::pathAngle(int16_t pa) { // returns the angle to the path pa 
     int16_t angle = map(_buffer[3+4*pa],0,255,0,180);  // pa0->_buffer[3], pa1->_buffer[7], etc.
     return angle;
   }
+}
+int16_t Protractor::pathVisibility() {
+  return pathVisibility(0);
 }
 int16_t Protractor::pathVisibility(int16_t pa) { // returns the angle to the path pa in the pathway list, indexed from 1. Left most path is 1. If pa exceeds number of pathways detected, return zero.
   if(pa >= pathCount() || pa < 0){
@@ -154,7 +159,7 @@ void Protractor::setNewSerialBaudRate(int32_t newBaudRate) { // change the Seria
   }
 }
 
-void Protractor::LEDshowObject() { // Set the feedback LEDs to follow the most intense Objects detected
+void Protractor::LEDshowObject() { // Set the feedback LEDs to follow the most visible Objects detected
   uint8_t sendData[3] = {LEDUSAGE,SHOWOBJ,'\n'};
   _write(sendData,3); // Send a signal (char LEDUSAGE) to tell Protractor that it needs to SHOWOBJ
 }
