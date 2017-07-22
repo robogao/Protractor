@@ -133,7 +133,7 @@ int16_t Protractor::pathVisibility(int16_t pa) { // returns the angle to the pat
   }
 }
 
-/////// ADVANCED FUNCTIONS ///////
+/////// SETTINGS ///////
 
 void Protractor::scanTime(int16_t milliSeconds) {//0 = scan only when called. 1 to 15 = rescan every 15ms, >15 = rescan every time_ms milliseconds.  Default time_ms is set to 30ms.
   if(milliSeconds >= 1 && milliSeconds <= MINDUR-1) {  // Values within 1 and 14 milliSeconds aren't allowed, the sensor requires a minimum 15 seconds to complete a scan.
