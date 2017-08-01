@@ -27,7 +27,7 @@
   proximity sensor.
 
   For a complete tutorial on wiring up and using the Protractor go to:
-    http://www.robogao.com/Protractor
+    http://www.will-moore.com/protractor/ProtractorAngleProximitySensor_UserGuide.pdf
 	
   ############################################################################
 */
