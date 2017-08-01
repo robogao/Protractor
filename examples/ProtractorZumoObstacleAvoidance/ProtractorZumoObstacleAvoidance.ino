@@ -1,7 +1,7 @@
 /* Pololu Zumo + Protractor
 This is an example showing how to use the Protractor sensor with a Zumo mini sumo robot version 1.x from Pololu.
 See (http://www.pololu.com) for details on the Zumo robot
-See (http://www.robogao.com/Protractor) for details on the Protractor sensor
+See (http://www.will-moore.com/protractor/ProtractorAngleProximitySensor_UserGuide.pdf) for details on the Protractor sensor
 
 Between turns, the Zumo normally drives in a straight line hoping to hit something. With a Protractor installed, 
 the Zumo can see an opponent, turn towards it, and switch to full speed to maximize it's push.
