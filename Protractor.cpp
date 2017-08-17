@@ -37,12 +37,15 @@ Protractor::Protractor()
 {
 }
 
-void Protractor::begin(Stream &serial) // Initialize the Protractor with Serial communication
+// Initialize the Protractor with Serial communication
+void Protractor::begin(Stream &serial)
 {
   _serial = &serial;
   _comm = SERIALCOMM;
 }
-void Protractor::begin(TwoWire &wire, int16_t address) // Initialize the Protractor with I2C communication
+
+// Initialize the Protractor with I2C communication
+void Protractor::begin(TwoWire &wire, int16_t address) 
 {
   _address = address;
   _wire = &wire;
@@ -52,10 +55,14 @@ void Protractor::begin(TwoWire &wire, int16_t address) // Initialize the Protrac
 
 /////// BASIC FUNCTIONS ///////
 
-bool Protractor::read() { // get all of the data from the protractor.
+// get all of the data from the protractor.
+bool Protractor::read() { 
   return read(MAXOBJECTS);
 }
-bool Protractor::read(int16_t obs) { // gets obs number of objects and obs number of paths from protractor. Returns the most visible objects and most open pathways. Minimizes data transfer for time sensitive applications.
+
+// gets obs number of objects and obs number of paths from protractor. 
+// Returns the most visible objects and most open pathways. Minimizes data transfer for time sensitive applications.
+bool Protractor::read(int16_t obs) { 
   if(obs > MAXOBJECTS) obs = MAXOBJECTS;
   _numdata = obs;
   uint8_t numBytes = 1 + obs*4;
@@ -79,18 +86,24 @@ bool Protractor::read(int16_t obs) { // gets obs number of objects and obs numbe
   }
 }
 
-int16_t Protractor::objectCount() { // returns the number of objects detected
+// returns the number of objects detected
+int16_t Protractor::objectCount() { 
   return (int16_t)(_buffer[0] >> 4); // number of objects detected is the high nibble of _buffer[0]
 }
 
-int16_t Protractor::pathCount() { // returns the number of paths detected
+// returns the number of paths detected
+int16_t Protractor::pathCount() { 
   return (int16_t)(_buffer[0] &= 0b00001111); // number of paths detected is the low nibble of _buffer[0]
 }
 
-int16_t Protractor::objectAngle() { // returns the angle to the most visible object
+// returns the angle to the most visible object
+int16_t Protractor::objectAngle() { 
   return objectAngle(0);
 }
-int16_t Protractor::objectAngle(int16_t ob) { // returns the angle to the object ob in the object list, indexed from 1. Left most object is 1. If ob exceeds number of objects detected, return zero.
+
+// returns the angle to the object ob in the object list, indexed from 1. 
+// Left most object is 1. If ob exceeds number of objects detected, return zero.
+int16_t Protractor::objectAngle(int16_t ob) { 
   if(ob >= objectCount() || ob < 0){
     return -1;
   }else{
@@ -98,10 +111,15 @@ int16_t Protractor::objectAngle(int16_t ob) { // returns the angle to the object
     return angle;
   }
 }
-int16_t Protractor::objectVisibility() { // returns the visibility of the most visible object
+
+// returns the visibility of the most visible object
+int16_t Protractor::objectVisibility() { 
   return objectVisibility(0);
 }
-int16_t Protractor::objectVisibility(int16_t ob = 0) { // returns the visibility of the object ob in the object list, indexed from 1. Left most object is 1. If ob exceeds number of objects detected, return zero.
+
+// returns the visibility of the object ob in the object list, indexed from 1.
+// Left most object is 1. If ob exceeds number of objects detected, return zero.
+int16_t Protractor::objectVisibility(int16_t ob = 0) { 
   if(ob >= objectCount() || ob < 0){
     return -1;
   }else{
@@ -110,10 +128,14 @@ int16_t Protractor::objectVisibility(int16_t ob = 0) { // returns the visibility
   }
 }
 
-int16_t Protractor::pathAngle() { // returns the angle to the most open pathway
+// returns the angle to the most open pathway
+int16_t Protractor::pathAngle() { 
   return pathAngle(0);
 }
-int16_t Protractor::pathAngle(int16_t pa) { // returns the angle to the path pa in the pathway list, indexed from 1. Left most path is 1. If pa exceeds number of pathways detected, return zero.
+
+// returns the angle to the path pa in the pathway list, indexed from 1.
+// Left most path is 1. If pa exceeds number of pathways detected, return zero.
+int16_t Protractor::pathAngle(int16_t pa) { 
   if(pa >= pathCount() || pa < 0){
     return -1;
   }else{
@@ -124,7 +146,10 @@ int16_t Protractor::pathAngle(int16_t pa) { // returns the angle to the path pa 
 int16_t Protractor::pathVisibility() {
   return pathVisibility(0);
 }
-int16_t Protractor::pathVisibility(int16_t pa) { // returns the angle to the path pa in the pathway list, indexed from 1. Left most path is 1. If pa exceeds number of pathways detected, return zero.
+
+// returns the angle to the path pa in the pathway list, indexed from 1.
+// Left most path is 1. If pa exceeds number of pathways detected, return zero.
+int16_t Protractor::pathVisibility(int16_t pa) { 
   if(pa >= pathCount() || pa < 0){
     return -1;
   }else{
@@ -135,7 +160,10 @@ int16_t Protractor::pathVisibility(int16_t pa) { // returns the angle to the pat
 
 /////// SETTINGS ///////
 
-void Protractor::scanTime(int16_t milliSeconds) {//0 = scan only when called. 1 to 15 = rescan every 15ms, >15 = rescan every time_ms milliseconds.  Default time_ms is set to 30ms.
+// Change the scan time
+// 0 = scan only when called. 1 to 15 = rescan every 15ms, >15 = rescan every time_ms milliseconds.
+// Default time_ms is set to 15ms.
+void Protractor::scanTime(int16_t milliSeconds) {
   if(milliSeconds >= 1 && milliSeconds <= MINDUR-1) {  // Values within 1 and 14 milliSeconds aren't allowed, the sensor requires a minimum 15 seconds to complete a scan.
     uint8_t sendData[3] = {SCANTIME,MINDUR,'\n'};
     _write(sendData,3); // Send a signal (char SCANTIME) to tell Protractor that it needs to change its time between scans to milliSeconds.
@@ -145,15 +173,20 @@ void Protractor::scanTime(int16_t milliSeconds) {//0 = scan only when called. 1 
   }
 }
 
-void Protractor::setNewI2Caddress(int16_t newAddress) { // change the I2C address. Will be stored after shutdown. See manual for instructions on restoring defaults. Default = 0x45 (69d).
+// change the I2C address. Will be stored after shutdown.
+// See manual for instructions on restoring defaults. Default address = 0x45 (69d).
+void Protractor::setNewI2Caddress(int16_t newAddress) { 
   if(newAddress >= 2 && newAddress <= 127) {
 	uint8_t sendData[3] = {I2CADDR,(byte)newAddress,'\n'};
     _write(sendData,3); // Send a signal (char I2CADDR) to tell Protractor that it needs to change its I2C address to the newAddress
   }
 }
 
-void Protractor::setNewSerialBaudRate(int32_t newBaudRate) { // change the Serial Bus baud rate. Will be stored after shutdown. See manual for instructions on restoring defaults. Default = 9600 baud. 0 = 1200, 1 = 2400, 2 = 4800, 3 = 9600, 4 = 19200, 5 = 28800, 6 = 38400, 7 = 57600, 8 = 115200, 9 = 230400
-  if(newBaudRate >= 1200 && newBaudRate <= 1000000) {
+// change the Serial Bus baud rate. Will be stored after shutdown.
+// See manual for instructions on restoring defaults.
+// Default = 9600 baud. Max = 250000 baud.
+void Protractor::setNewSerialBaudRate(int32_t newBaudRate) { 
+  if(newBaudRate >= 1200 && newBaudRate <= 250000) {
 	uint8_t sendData[5] = {BAUDRATE,(byte)(newBaudRate & 0x00FF),(byte)(newBaudRate >> 8),(byte)(newBaudRate >> 16),'\n'};
     _write(sendData,5); // Send a signal (char BAUDRATE) to tell Protractor that it needs to change its baudrate to the newBaudRate
   }
