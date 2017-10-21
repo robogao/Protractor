@@ -1,21 +1,4 @@
 /*
-  Protractor.h - Library for using the Protractor Sensor
-  Copyright (c) 2017 William Moore.  All right reserved.
-
-  This library is free software; you can redistribute it and/or
-  modify it under the terms of the GNU Lesser General Public
-  License as published by the Free Software Foundation; either
-  version 2.1 of the License, or (at your option) any later version.
-
-  This library is distributed in the hope that it will be useful,
-  but WITHOUT ANY WARRANTY; without even the implied warranty of
-  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-  Lesser General Public License for more details.
-
-  You should have received a copy of the GNU Lesser General Public
-  License along with this library; if not, write to the Free Software
-  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
-  
   ###########################################################################
   
   A lot of sensors can tell the distance to an object, but determining the angle to an object is much harder. 
@@ -27,7 +10,7 @@
   proximity sensor.
 
   For a complete tutorial on wiring up and using the Protractor go to:
-    http://www.will-moore.com/protractor/ProtractorAngleProximitySensor_UserGuide.pdf
+    http://www.robogao.com/Protractor
 	
   ############################################################################
 */
@@ -58,6 +41,7 @@ class Protractor
     Protractor();
     void begin(Stream &serial); // Initialize protractor using Serial
     void begin(TwoWire &wire, int16_t address); // Initialize protractor using I2C
+    bool connected(); // Returns 1 if Protractor is successfully contacted, otherwise 0.
     bool read(); // gets all the data for all objects and paths from the protractor. Up to 4 objects and paths may be sensed at a time.
     bool read(int16_t obs); // gets only obs number of objects and obs number of paths from protractor. Returns the most visible objects and most open pathways first. Minimizes data transfer for time sensitive applications. If obs > 4 then obs = 4.
     int16_t objectCount(); // returns the number of objects detected
@@ -73,14 +57,22 @@ class Protractor
     void LEDshowObject(); // Set the feedback LEDs to follow the most visible Objects detected
     void LEDshowPath(); // Set the feedback LEDs to follow the most open pathway detected
     void LEDoff(); // Turn off the feedback LEDs
-    void scanTime(int16_t milliSeconds); // 0 = scan only when called. 1 to 15 = rescan every 15ms, >15 = rescan every milliSeconds, max 32767.  Default time_ms is set to 15ms.
-    void setNewI2Caddress(int16_t newAddress); // Change the I2C address. Will be remembered after Protractor shutdown. Protractor must be reset to take effect. See manual for instructions on restoring defaults. Default = 0x45 (69d).
-    void setNewSerialBaudRate(int32_t baudRate); // Change the Serial Bus baud rate. Will be remembered after Protractor shutdown. Protractor must be reset to take effect. See manual for instructions on restoring defaults. Default = 9600 baud.
+    bool scanTime(int16_t milliSeconds); // 0 = scan only when called. 1 to 15 = rescan every 15ms, >15 = rescan every milliSeconds, max 32767.  Default time_ms is set to 15ms.
+    bool setNewI2Caddress(int16_t newAddress); // Change the I2C address. Will be remembered after Protractor shutdown. Protractor must be reset to take effect. See manual for instructions on restoring defaults. Default = 0x45 (69d).
+    bool setNewSerialBaudRate(int32_t baudRate); // Change the Serial Bus baud rate. Will be remembered after Protractor shutdown. Protractor must be reset to take effect. See manual for instructions on restoring defaults. Default = 9600 baud.
+	bool productType(char prodtype[]); // Read the Product Type from the Protractor. Two char array should equal 'P' 'R'. Returns 1 if 'P' 'R' is returned, 0 otherwise.
+    uint32_t serialNumber(); // Read the Serial Number from the Protractor.
+    int16_t voltage(); // Read the voltage Vin sensed by the Protractor, value returned is in millivolts. Accuracy is +/- 10% above 6.5 volts, +/- 15% below 6.5 volts.
+    bool reflections(byte data[]); // Read the raw data from the sensor. 8 element array passed into function will be populated with the raw values for the amount of light reflected off nearby objects.
+	bool commParams(byte data[]);
   private:
     uint8_t _read();
     void _write(uint8_t arrayBuffer[], uint8_t arrayLength);
     uint8_t _available();
     void _requestData(uint8_t numBytes);
+    const unsigned long _commWait = 20000; // how many microSeconds to wait for Protractor to respond to a request for data
+	const unsigned long _scanWait = 20000; // wait this much longer to scan if continuous scan mode is disabled
+	unsigned long _waitTime = _commWait;
     uint8_t _buffer[1+4*MAXOBJECTS]; // store data received from Protractor.
     uint8_t _address; // Stores the I2C bus address when communicating over I2C
     uint8_t _numdata; // Number of data points requested from sensor during most recent read
