@@ -13,7 +13,7 @@ This example assumes I2C communication, but the same methods can be applied whet
 is used.
 
 For a complete tutorial on wiring up and using the Protractor go to:
-    http://www.will-moore.com/protractor/ProtractorAngleProximitySensor_UserGuide.pdf
+    http://www.robogao.com/Protractor
 */
 
 #include <Protractor.h>
@@ -23,6 +23,9 @@ Protractor myProtractor;
 
 void setup() {
   Serial.begin(9600); // For printing results to the COM port Serial Monitor
+  while (! Serial); // Wait for Leonardo
+  
+  Wire.begin();
   myProtractor.begin(Wire,69); // Use I2C/Wire Library to talk with Protractor on default address 69
   
   Serial.println("Protractor Sensor Demo!");
@@ -36,12 +39,17 @@ void setup() {
     Serial.println("Communication Error, Check Wiring and I2C Address are correct");
   }
   
-  // Increase the Scan Time to 1 second
+  // Increase the Scan Time to 300 milliSecond
+  // Notice that the Blue LEDs won't update as fast or smoothly now, but the average power consumption will drop significantly
   if(connected) {
-    myProtractor.scanTime(300); // It will now take 300 milliSeconds to complete a 180 degree scan
-	Serial.println("New Scan Time Set");
+    bool scanTimeSet = myProtractor.scanTime(300); // scan time must be between 1 and 32767
+    if(scanTimeSet){ // It will now take 300 milliSeconds to complete a 180 degree scan
+	  Serial.println("New Scan Time Set");
+	}else{
+	  Serial.println("Unable to set new scan time, scan time is not valid");
+	}
   }
-  delay(10000); // Play with the Protractor for 10 seconds. Note that the Blue LEDs don't update as fast or smoothly now.
+  delay(10000); // Play with the Protractor for 10 seconds. 
   
   // Disable Continuous Scanning
   if(connected) {

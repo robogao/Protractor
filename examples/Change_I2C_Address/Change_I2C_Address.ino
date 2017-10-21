@@ -1,7 +1,13 @@
 /* PROTRACTOR - A Proximity Sensor that Measures Angles
 This is an example for the Protractor Sensor. This example will demonstrate how to change the I2C address 
-of the Protractor. Changes to the Protractor's I2C address do not take effect until after the Protractor
-is rebooted.
+of the Protractor.
+
+The Protractor supports I2C addresses between 2 and 127. Requests to operate on addresses outside this range
+will be ignored by the Protractor.
+
+Requests to change the Protractor's I2C address do not take effect until after the Protractor is
+rebooted. To reboot, both the power supply connected to Protractor's Vin pin and any micro-controller 
+connected to the Protractor's communication lines must be unplugged or powered down.
 
 ELECTRICAL CONNECTIONS
 
@@ -19,7 +25,7 @@ _________________________________________________________________
 -----------------------------------------------------------------
 
 For a complete tutorial on wiring up and using the Protractor go to:
-    http://www.will-moore.com/protractor/ProtractorAngleProximitySensor_UserGuide.pdf
+    http://www.robogao.com/Protractor
 */
 
 
@@ -33,7 +39,10 @@ int newI2Caddress = 28; // Pick a number between 0 and 127 that is not already o
 
 void setup() {
   Serial.begin(9600); // For printing results to the COM port Serial Monitor
-  myProtractor.begin(Wire,currentI2Caddress); // Initialize Protractor at the current I2C address
+  while (! Serial); // Wait for Leonardo
+  
+  Wire.begin();
+  myProtractor.begin(Wire,currentI2Caddress); // Use I2C/Wire Library to talk with Protractor on default address 69
   
   Serial.println("Protractor Sensor Demo!");
   delay(500);
@@ -41,7 +50,8 @@ void setup() {
   // Check communication with the Protractor
   bool connected = myProtractor.read();
   if(connected) {
-    Serial.println("Connected to Protractor");
+    Serial.print("Connected to Protractor on I2C Address ");
+	Serial.println(currentI2Caddress);
   }else{
     Serial.println("Communication Error, Check Wiring and I2C Address are correct");
   }
@@ -49,9 +59,19 @@ void setup() {
   // Once initialized, a new I2C address can be set at any time.
   // The new I2C address does not take affect until the Protractor is rebooted.
   if(connected) {
-    myProtractor.setNewI2Caddress(newI2Caddress); // Next time the Protractor is rebooted, it will be on I2C address 28
-	Serial.print("New I2C Address Set: ");
-	Serial.println(newI2Caddress);
+    bool addressSet = myProtractor.setNewI2Caddress(newI2Caddress); // Next time the Protractor is rebooted, it will be on I2C address 28
+	delay(10);
+	if(addressSet){
+	  Serial.print("New I2C Address Set: ");
+	  Serial.println(newI2Caddress);
+	  Serial.println();
+	  Serial.println("-------------------------------------------------------------------");
+	  Serial.println("Protractor must be Power Cycled for new I2C address to take effect.");
+	  Serial.println("-------------------------------------------------------------------");
+	  Serial.println();
+	}else{
+	  Serial.println("Unable to set new address, address is not valid");
+	}
   }
 }
 

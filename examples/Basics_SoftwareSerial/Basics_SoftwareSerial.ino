@@ -19,7 +19,7 @@ _________________________________________________________________
     RX          |   TX_pin  |   TX_pin  |   TX_pin  |   TX_pin  |  Protractor has built-in level shifters
 -----------------------------------------------------------------
 For a complete tutorial on wiring up and using the Protractor go to:
-    http://www.will-moore.com/protractor/ProtractorAngleProximitySensor_UserGuide.pdf
+    http://www.robogao.com/Protractor
 */
 
 #include <Protractor.h>
@@ -34,6 +34,8 @@ SoftwareSerial mySerial(RX_pin,TX_pin); // RX,TX
 
 void setup() {
   Serial.begin(9600); // For printing results to the COM port Serial Monitor
+  while (! Serial); // Wait for Leonardo
+  
   mySerial.begin(9600); // Initialize SoftwareSerial object mySerial for communicating with Protractor
   myProtractor.begin(mySerial); // Use mySerial to talk with Protractor.
   

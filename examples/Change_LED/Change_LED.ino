@@ -11,7 +11,7 @@ This example assumes I2C communication, but the same methods can be applied whet
 communication is used.
 
 For a complete tutorial on wiring up and using the Protractor go to:
-    http://www.will-moore.com/protractor/ProtractorAngleProximitySensor_UserGuide.pdf
+    http://www.robogao.com/Protractor
 */
 
 #include <Protractor.h>
@@ -21,6 +21,9 @@ Protractor myProtractor;
 
 void setup() {
   Serial.begin(9600); // For printing results to the COM port Serial Monitor
+  while (! Serial); // Wait for Leonardo
+  
+  Wire.begin();
   myProtractor.begin(Wire,69); // Use I2C/Wire Library to talk with Protractor on default address 69
   
   Serial.println("Protractor Sensor Demo!");

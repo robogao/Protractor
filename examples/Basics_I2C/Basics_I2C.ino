@@ -19,7 +19,7 @@ _________________________________________________________________
     SCL         |   SCL/A5  |   SCL/3   |   SCL/21  |   SCL/21  |  Protractor has built-in level shifters
 -----------------------------------------------------------------
 For a complete tutorial on wiring up and using the Protractor go to:
-    http://www.will-moore.com/protractor/ProtractorAngleProximitySensor_UserGuide.pdf
+    http://www.robogao.com/Protractor
 */
 
 #include <Protractor.h>
@@ -29,6 +29,9 @@ Protractor myProtractor;
 
 void setup() {
   Serial.begin(9600); // For printing results to the COM port Serial Monitor
+  while (! Serial); // Wait for Leonardo
+  
+  Wire.begin();
   myProtractor.begin(Wire,69); // Use I2C/Wire Library to talk with Protractor on default address 69
   
   Serial.println("Protractor Sensor Demo!");

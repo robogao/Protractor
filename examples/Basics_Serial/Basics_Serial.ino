@@ -26,7 +26,7 @@ _____________________________________________________
     RX          |   1       |   18      |   18      |  
 -----------------------------------------------------
 For a complete tutorial on wiring up and using the Protractor go to:
-    http://www.will-moore.com/protractor/ProtractorAngleProximitySensor_UserGuide.pdf
+    http://www.robogao.com/Protractor
 */
 
 #include <Protractor.h>
@@ -35,6 +35,8 @@ Protractor myProtractor;
 
 void setup() {
   Serial.begin(9600); // For printing results to the COM port
+  while (! Serial); // Wait for Leonardo
+  
   Serial1.begin(9600); // Initialize Serial1 for communicating with Protractor
   myProtractor.begin(Serial1); // Use Serial1 to talk with Protractor.
   

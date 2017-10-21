@@ -1,7 +1,13 @@
 /* PROTRACTOR - A Proximity Sensor that Measures Angles
 This is an example for the Protractor Sensor. This example will demonstrate how to change the Serial 
-baud rate of the Protractor. Changes to the Protractor's serial baud rate do not take effect until after 
-the Protractor is rebooted.
+baud rate of the Protractor.
+
+The Protractor supports serial baud rates between 1200 and 250000 baud. Requests to operate at baud rates 
+outside this range will be ignored by the Protractor.
+
+Requests to change the Protractor's serial baud rate do not take effect until after the Protractor is
+rebooted. To reboot, both the power supply connected to Protractor's Vin pin and any micro-controller 
+connected to the Protractor's communication lines must be unplugged or powered down.
 
 ELECTRICAL CONNECTIONS
 
@@ -18,7 +24,7 @@ _________________________________________________________________
     RX          |   TX      |   TX      |   TX      |   TX      |  Protractor has built-in level shifters
 -----------------------------------------------------------------
 For a complete tutorial on wiring up and using the Protractor go to:
-    http://www.will-moore.com/protractor/ProtractorAngleProximitySensor_UserGuide.pdf
+    http://www.robogao.com/Protractor
 */
 
 #include <Protractor.h>
@@ -31,11 +37,13 @@ const int RX_pin = 10; // Not all pins can be used for RX. See https://www.ardui
 const int TX_pin = 11;
 SoftwareSerial mySerial(RX_pin,TX_pin); // RX,TX
 
+// SoftwareSerial library supports a maximum 57600 baud.
 long currentBaudRate = 9600; // Whatever the Protractor's current baud rate is, default is 9600
 long newBaudRate = 57600; // Pick a new baud rate for the Protractor.
 
 void setup() {
   Serial.begin(9600); // For printing results to the COM port Serial Monitor
+  while (! Serial); // Wait for Leonardo
   
   // Remove these 2 lines if using Hardware Serial
   mySerial.begin(currentBaudRate); // Initialize Serial object for communicating with Protractor
@@ -50,7 +58,9 @@ void setup() {
   // Check communication with the Protractor
   bool connected = myProtractor.read();
   if(connected) {
-    Serial.println("Connected to Protractor");
+    Serial.print("Connected to Protractor over Serial at ");
+	Serial.print(currentBaudRate);
+	Serial.println(" baud");
   }else{
     Serial.println("Communication Error, Check Wiring and Baud Rate are Correct");
   }
@@ -58,9 +68,19 @@ void setup() {
   // Once initialized, a new baud rate can be set at any time.
   // The new baud rate does not take affect until the Protractor is rebooted.
   if(connected) {
-    myProtractor.setNewSerialBaudRate(newBaudRate); // Next time the Protractor is rebooted, serial communication will be at the new baud rate
-	Serial.print("New Baud Rate Set: ");
-	Serial.println(newBaudRate);
+    bool baudrateSet = myProtractor.setNewSerialBaudRate(newBaudRate); // Next time the Protractor is rebooted, serial communication will be at the new baud rate
+	delay(10);
+	if(baudrateSet){
+	  Serial.print("New Baud Rate Set: ");
+	  Serial.println(newBaudRate);
+	  Serial.println();
+	  Serial.println("-----------------------------------------------------------------");
+	  Serial.println("Protractor must be Power Cycled for new baud rate to take effect.");
+	  Serial.println("-----------------------------------------------------------------");
+	  Serial.println();
+	}else{
+	  Serial.println("Unable to set new baud rate, baud rate is not valid");
+	}
   }
 }
 
